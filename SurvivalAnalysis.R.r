@@ -9,13 +9,12 @@ library(survminer)
 library(ggplot2)
 
 # Set seed for reproducibility
-set.seed(123)
+set.seed(163)
 
 # **************************************************************************
 # CREATE TOY SDTM DATASETS (CDISC standards)
 # **************************************************************************
-# CDISC - Clinical data interchange standards consortium
-# ADSL - Subject Level Analysis Dataset
+# CDISC - Clinical Data Interchange Standards Consortium
 # ADSL Subject - Level Analysis Dataset. It serves as source of STDM
 # TRT01P = planned treatment
 # TRT01A = treatment actually received
@@ -52,6 +51,7 @@ adsl <- tibble(
 survival_data <- adsl %>%
   mutate(
     # Simulate survival times with treatment effect
+    # baseline_hazard the preexisting risk before considering any covariates
     baseline_hazard = case_when(
       ARMCD == "PBO" ~ 1.0,
       ARMCD == "D50" ~ 0.7,   # 30% hazard reduction
@@ -59,7 +59,7 @@ survival_data <- adsl %>%
     ),
     # Add age effect (older = higher hazard)
     # λ(t∣age)=λ0(t)eβ×age  (here =λ0(t) is the  hazard  function,
-    # beta is the regression coefficient representing the age effect )
+    # Beta is the regression coefficient representing the age effect )
     age_effect = exp((AGE - 62) * 0.02),
     total_hazard = baseline_hazard * age_effect,
     
@@ -234,4 +234,5 @@ print(summary_stats)
 
 cat("\n=== Analysis Complete ===\n")
 cat("Note: This is simulated data for demonstration purposes.\n")
+
 cat("In real analysis, ensure proper data validation and quality checks.\n")
