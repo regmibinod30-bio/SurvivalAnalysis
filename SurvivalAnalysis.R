@@ -11,9 +11,9 @@ library(ggplot2)
 # Set seed for reproducibility
 set.seed(163)
 
-# **************************************************************************
-# CREATE TOY SDTM DATASETS (CDISC standards)
-# **************************************************************************
+# *
+# Create toy dataset for testing the pipeline (CDISC standards)
+# *
 # CDISC - Clinical Data Interchange Standards Consortium
 # ADSL Subject - Level Analysis Dataset. It serves as source of STDM
 # TRT01P = planned treatment
@@ -75,9 +75,9 @@ survival_data <- adsl %>%
     EVENT = 1 - CNSR
   )
 
-# ****************************************************************************
-# CREATE ADTTE (Time-to-Event Analysis Dataset) using Admiral
-# ****************************************************************************
+
+# Create ADTTE (Time-to-Event Analysis Dataset) using Admiral
+
 adtte <- survival_data %>%
   mutate(
     PARAMCD = "OS",
@@ -92,9 +92,9 @@ adtte <- survival_data %>%
          STARTDT, ADT, AVAL, AVALU, CNSR, EVENT, EVNTDESC)
 
 
-# ****************************************************************************
-# SURVIVAL ANALYSIS
-# ****************************************************************************
+# 
+# Survival analysis
+# 
 
 # Create survival object
 # Refere Biostatistics text book for interpretation of Kaplan-Meier Estimate
@@ -114,9 +114,9 @@ print(km_fit)
 print("\nMedian Survival Times (months):")
 print(summary(km_fit)$table)
 
-# ****************************************************************************
-# COX PROPORTIONAL HAZARDS MODEL
-# ****************************************************************************
+# 
+# Cox proportion hazard model
+# 
 
 # Uni variate Cox model - Treatment effect
 # Cox proportion hazards regression model for survival data
@@ -132,17 +132,17 @@ cox_adjusted <- coxph(surv_obj ~ ARM + AGE + SEX, data = adtte)
 print("\nAdjusted Cox Model (Treatment + Age + Sex):")
 print(summary(cox_adjusted))
 
-# ****************************************************************************
-# LOG-RANK TEST
-# ****************************************************************************
+# *
+# Log rank test
+# *
 
 logrank_test <- survdiff(surv_obj ~ ARM, data = adtte)
 print("\nLog-Rank Test for Treatment Comparison:")
 print(logrank_test)
 
-# ***************************************************************************
-# VISUALIZATIONS
-# ***************************************************************************
+# *
+# Visualization
+# *
 
 # Kaplan-Meier Curves
 km_plot <- ggsurvplot(
@@ -190,9 +190,9 @@ forest_plot <- ggplot(hr_data, aes(x = HR, y = Comparison)) +
 print(forest_plot)
 
 
-# ****************************************************************************
-# SURVIVAL RATES AT KEY TIMEPOINTS
-# ****************************************************************************
+# *
+# Survival rates in key time points
+# *
 
 # Calculate survival rates at 6, 12, and 18 months
 timepoints <- c(6, 12, 18)
@@ -236,3 +236,4 @@ cat("\n=== Analysis Complete ===\n")
 cat("Note: This is simulated data for demonstration purposes.\n")
 
 cat("In real analysis, ensure proper data validation and quality checks.\n")
+
