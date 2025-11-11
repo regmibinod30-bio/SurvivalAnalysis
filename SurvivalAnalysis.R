@@ -99,7 +99,7 @@ adtte <- survival_data %>%
 # Create survival object
 # Refere Biostatistics text book for interpretation of Kaplan-Meier Estimate
 # Refer Biostatistics text book to know how confidence interval of Kaplan-Meier
-# Estimate confidence interval is calculated
+# Estimate confidence interval
 
 surv_obj <- Surv(time = adtte$AVAL, event = adtte$EVENT)
 
@@ -236,4 +236,5 @@ cat("\n=== Analysis Complete ===\n")
 cat("Note: This is simulated data for demonstration purposes.\n")
 
 cat("In real analysis, ensure proper data validation and quality checks.\n")
+
 
